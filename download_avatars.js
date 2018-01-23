@@ -38,5 +38,4 @@ getRepoContributors(owner, repo, function(err, result) {
     var filePath = 'avatars/' + contributor.login + '.jpg';
     downloadImageByURL(url, filePath);
   }
-
 });
