@@ -1,5 +1,6 @@
 var request = require('request');
 var github_token = require('./secrets');
+var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -18,11 +19,18 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+  .pipe(fs.createWriteStream(filePath));
+}
+
 getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err);
   for (var i = 0; i < result.length; i++) {
     var contributor = result[i];
-    console.log(contributor.avatar_url);
+    var url = contributor.avatar_url;
+    var filePath = 'avatars/' + contributor.login + '.jpg';
+    downloadImageByURL(url, filePath);
   }
 
 });
